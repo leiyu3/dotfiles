@@ -1,0 +1,21 @@
+#!/bin/sh
+
+export DISPLAY=:0
+export XAUTHORITY=/home/lei/.Xauthority
+
+LAPTOP='eDP-1'
+MON1='DP-2-3'
+MON2='DP-2-2'
+
+MONITOR_STATE=$(xrandr | grep "$MON1 connected")
+
+if [[ -n $MONITOR_STATE ]]; then
+    notify-send "Monitor connected, will now try to toggle dock"
+    xrandr --output eDP-1 --off --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off --output DP-2-1 --off --output DP-2-2 --mode 1440x900 --pos 0x0 --rotate normal --output DP-2-3 --primary --mode 1680x1050 --pos 1440x0 --rotate normal
+else
+xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off --output DP-2-1 --off --output DP-2-2 --off --output DP-2-3 --off
+fi
+
+setbg
+
+remaps

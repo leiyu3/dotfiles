@@ -1,0 +1,26 @@
+#!/bin/bash
+
+WEBSITE="~/Documents/codes/leiyu3.github.io/"
+
+session="web-dev"
+tmux has-session -t $session &> /dev/null
+
+if [ $? != 0 ]
+then
+tmux new-session -d -s $session
+
+    tmux rename-window -t 1 "Main"
+
+    tmux new-window -t $session:2 -n "html"
+    tmux new-window -t $session:3 -n "blog"
+    tmux new-window -t $session:4 -n "css"
+    tmux new-window -t $session:5 -n "server"
+
+    tmux send-keys -t $session:1 "cd $WEBSITE" C-m "clear" C-m
+    tmux send-keys -t $session:2 "cd $WEBSITE" C-m "clear" C-m "v index.html" C-m
+    tmux send-keys -t $session:3 "cd $WEBSITE/lb" C-m "clear" C-m
+    tmux send-keys -t $session:4 "cd $WEBSITE" C-m "clear" C-m "v style.css" C-m
+    tmux send-keys -t $session:5 "cd $WEBSITE" C-m "clear" C-m "./serverup" C-m
+fi
+
+tmux attach -t $session:1
