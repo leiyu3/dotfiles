@@ -1,3 +1,0 @@
-[submodule ".local/src/.local/src/dmenu"]
-	path = .local/src/.local/src/dmenu
-	url = git@github.com:leiyu3/dmenu.git

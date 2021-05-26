@@ -35,6 +35,8 @@ set noruler
 set laststatus=0
 set noshowcmd
 set hidden
+set ignorecase
+set smartcase
 
 set updatetime=50
 
@@ -52,7 +54,7 @@ set updatetime=50
 " Perform dot commands over visual blocks:
 	vnoremap . :normal .<CR>
 " Goyo plugin makes text more readable when writing prose:
-	map <leader>f :Goyo \| set bg=light \| set linebreak<CR>
+	map <leader>f :Goyo \| set bg=light \| set linebreak \| set wrap<CR>
 " Spell-check set to <leader>o, 'o' for 'orthography':
 	map <leader>o :setlocal spell! spelllang=en_us<CR>
     hi SpellBad ctermfg=000 ctermbg=014 cterm=none
