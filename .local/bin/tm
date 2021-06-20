@@ -1,36 +1,68 @@
 #!/usr/bin/bash
 
-WEBSITE="~/Documents/codes/leiyu3.github.io"
-PGTH="~/Documents/codes/Python/py_treasure-hunter"
 
-createWindow() {
-    session=$1
-    window=$2
-    shift
-    shift
-    hasWindow=$(tmux list-windows -t $session | grep "$window")
-    if [ -z "$hasWindow" ]; then
-        cmd="tmux neww -t $session: -n $window -d "
-        if [ $# -gt 0 ]; then
-            cmd="$cmd $@"
-        fi
-        echo "Creating Window(\"$hasWindow\"): $cmd"
-        eval $cmd
-    fi
+
+pygame () {
+    ROOT="/home/lei/Documents/codes/Python/py_treasure-hunter"
+    session="PyGame"
+    cd $ROOT
+    tmux new-session -d -s $session
+    tmux rename-window -t 1 "Main"
+    tmux new-window -t $session:1 -n "vim"
+    tmux new-window -t $session:2 -n "test"
+    tmux new-window -t $session:3 -n "readme"
+    tmux new-window -t $session:4 -n "python"
+
+    tmux send-keys -t $session:1 "cd $ROOT" C-m "clear" C-m "v TreasureHunt.py" C-m
+    tmux send-keys -t $session:2 "cd $ROOT" C-m "clear" C-m
+    tmux send-keys -t $session:3 "cd $ROOT" C-m "clear" C-m "v README.md" C-m
+    tmux send-keys -t $session:4 "cd $ROOT" C-m "clear" C-m "python" C-m
 }
 
+web () {
 
-createSession() {
-    session=$1
-    window=$2
-    shift
-    shift
-    cmd="tmux new -s $session -d -n $window $@ > /dev/null 2>&1"
+    WEBSITE="/home/lei/Documents/codes/leiyu3.github.io/"
+    session="web-dev"
+    cd $WEBSITE
 
-    echo "Creating Session: $cmd"
-    eval $cmd
+    tmux new-session -d -s $session
+    tmux rename-window -t 1 "Main"
+
+    tmux new-window -t $session:2 -n "html"
+    tmux new-window -t $session:3 -n "blog"
+    tmux new-window -t $session:4 -n "css"
+    tmux new-window -t $session:5 -n "server"
+
+    tmux send-keys -t $session:1 "cd $WEBSITE" C-m "clear" C-m
+    tmux send-keys -t $session:2 "cd $WEBSITE" C-m "clear" C-m "v index.html" C-m
+    tmux send-keys -t $session:3 "cd $WEBSITE/lb" C-m "clear" C-m
+    tmux send-keys -t $session:4 "cd $WEBSITE" C-m "clear" C-m "v style.css" C-m
+    tmux send-keys -t $session:5 "cd $WEBSITE" C-m "clear" C-m "./serverup" C-m
 }
 
+codeabbey () {
+    ROOT="/home/lei/Documents/codes/codeabbey"
+    session="CodeAbbey"
+    cd $ROOT
+    tmux new-session -d -s $session
+    tmux rename-window -t 1 "Main"
+    tmux new-window -t $session:2 -n "test"
+}
+
+cr () {
+    ROOT="/home/lei/Documents/codes/CGCSE-Registration"
+    session="CGCSE-Reg"
+    cd $ROOT
+    tmux new-session -d -s $session
+    tmux rename-window -t 1 "Main"
+    tmux new-window -t $session:2 -n "test"
+    tmux new-window -t $session:3 -n "jupyter"
+
+    tmux send-keys -t $session:1 "cd Python\ app" C-m "clear" C-m
+    tmux send-keys -t $session:2 "cd Python\ app" C-m "clear" C-m
+    tmux send-keys -t $session:3 "cd Python\ app" C-m "jupyter console" C-m "clear" C-m
+
+}
 
 while [ "$#" -gt 0 ]; do
     curr=$1
@@ -38,41 +70,21 @@ while [ "$#" -gt 0 ]; do
 
     case "$curr" in
     "-w")
-        ~/.local/bin/tmux-web
+        tmux has-session -t web-dev &> /dev/null || web
+        tmux attach -t web-dev:1
         ;;
     "-th")
-        createSession treasure-hunter main -c $PGTH
-        createWindow treasure-hunter nvim -c $PGTH
+        tmux has-session -t PyGame &> /dev/null || pygame
+        tmux attach -t PyGame:1
         ;;
-
-    "-ta")
-        createSession tvui primary -c $TVUI_AUTOMATION
-        createWindow tvui tvui_automation -c $TVUI_AUTOMATION
-        createWindow tvui tvui_automation_vim -c $TVUI_AUTOMATION
+    "-ca")
+        tmux has-session -t CodeAbbey &> /dev/null || codeabbey
+        tmux attach -t CodeAbbey:1
         ;;
-
-    "-t")
-        createSession tvui primary -c $TVUI
-        createWindow tvui tvui_server -c $TVUI "./tvui server"
-        createWindow tvui tvui_client -c $TVUI "./tvui client"
+    "-cr")
+        tmux has-session -t CGCSE-Reg &> /dev/null || cr
+        tmux attach -t CGCSE-Reg:1
         ;;
-
-    "--vwm")
-        createSession $PERSONAL_SESSION primary -c $VWM
-        createWindow $PERSONAL_SESSION vwm -c $VWM "NVIM_LISTEN_ADDRESS=/tmp/nvim2 go run main.go"
-        ;;
-
-    "--deathmatch")
-        createSession $PERSONAL_SESSION primary -c $DEATHMATCH
-        createWindow $PERSONAL_SESSION server -c $DEATHMATCH/server "docker-compose up --build"
-        tmux next-window -t $PERSONAL_SESSION:primary
-        ;;
-
-    "--dm-logging")
-        createSession $PERSONAL_SESSION primary -c $DEATHMATCH
-        tmux split-window -t $PERSONAL_SESSION:primary -p 35 -h tail -F ~/.local/share/nvim/VimDeathmatch.log
-        ;;
-
     *) echo "Unavailable command... $curr"
     esac
 done

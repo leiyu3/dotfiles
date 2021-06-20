@@ -19,7 +19,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-commentary'
 Plug 'ap/vim-css-color'
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+"Plug 'honza/vim-snippets'
+Plug 'jupyter-vim/jupyter-vim'
 Plug 'lervag/vimtex'
 call plug#end()
 
@@ -164,6 +165,7 @@ nnoremap <leader>h :call ToggleHiddenAll()<CR>
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
+let g:UltiSnipsEditSplit="vertical"
 
 
 "Vimtex settings
@@ -202,3 +204,5 @@ nmap <leader>t :terminal<CR>
 
 " Save bind
 nmap <C-s> :w<CR>
+
+nmap <silent> <leader>e :JupyterSendRange<CR>

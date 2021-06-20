@@ -11,9 +11,9 @@ MONITOR_STATE=$(xrandr | grep "$MON1 connected")
 
 if [[ -n $MONITOR_STATE ]]; then
     notify-send "Monitor connected, will now try to toggle dock"
-    xrandr --output eDP-1 --off --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off --output DP-2-1 --off --output DP-2-2 --mode 1440x900 --pos 0x0 --rotate normal --output DP-2-3 --primary --mode 1680x1050 --pos 1440x0 --rotate normal
+    xrandr --output eDP1 --off --output DP1 --off --output DP2 --off --output DP2-1 --off --output DP2-2 --mode 1440x900 --pos 0x0 --rotate normal --output DP2-3 --primary --mode 1680x1050 --pos 1440x0 --rotate normal --output HDMI1 --off --output HDMI2 --off --output VIRTUAL1 --off
 else
-xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off --output DP-2-1 --off --output DP-2-2 --off --output DP-2-3 --off
+    xrandr --output eDP-1 --mode 1920x1080 --pos 0x0 --rotate normal --output DP-1 --off --output HDMI-1 --off --output DP-2 --off --output HDMI-2 --off --output DP-2-1 --off --output DP-2-2 --off --output DP-2-3 --off
 fi
 
 setbg
