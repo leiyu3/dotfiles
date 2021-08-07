@@ -64,6 +64,19 @@ cr () {
 
 }
 
+work () {
+    ROOT="/home/lei/Documents/resume"
+    session="work"
+    cd $ROOT
+    tmux new-session -d -s $session
+    tmux rename-window -t 1 "resume"
+    tmux new-window -t $session:2 -n "cover_letter"
+
+    tmux send-keys -t $session:1 "vim resume.tex" C-m
+    tmux send-keys -t $session:2 "vim coverletter.tex" C-m
+}
+
+
 while [ "$#" -gt 0 ]; do
     curr=$1
     shift
@@ -84,6 +97,10 @@ while [ "$#" -gt 0 ]; do
     "-cr")
         tmux has-session -t CGCSE-Reg &> /dev/null || cr
         tmux attach -t CGCSE-Reg:1
+        ;;
+    "-work")
+        tmux has-session -t work &> /dev/null || work
+        tmux attach -t work:1
         ;;
     *) echo "Unavailable command... $curr"
     esac

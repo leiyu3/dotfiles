@@ -19,18 +19,25 @@ Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-commentary'
 Plug 'ap/vim-css-color'
 Plug 'SirVer/ultisnips'
-"Plug 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
 Plug 'jupyter-vim/jupyter-vim'
 Plug 'lervag/vimtex'
+Plug 'neovim/nvim-lspconfig'
+Plug 'morhetz/gruvbox'
 call plug#end()
 
+lua << EOF
+require'lspconfig'.pyright.setup{}
+EOF
+
 set title
-set bg=light
+colorscheme gruvbox
+set bg=dark
 set go=a
 set mouse=a
 set nohlsearch
 set clipboard+=unnamedplus
-set nowrap
+"set nowrap
 set noshowmode
 set noruler
 set laststatus=0
@@ -55,7 +62,7 @@ set updatetime=50
 " Perform dot commands over visual blocks:
 	vnoremap . :normal .<CR>
 " Goyo plugin makes text more readable when writing prose:
-	map <leader>f :Goyo \| set bg=light \| set linebreak \| set wrap<CR>
+	map <leader>f :Goyo \| set bg=dark \| set linebreak \| set wrap<CR>
 " Spell-check set to <leader>o, 'o' for 'orthography':
 	map <leader>o :setlocal spell! spelllang=en_us<CR>
     hi SpellBad ctermfg=000 ctermbg=014 cterm=none
@@ -184,20 +191,21 @@ set shiftwidth=4
 " On pressing tab, insert 4 spaces
 set expandtab
 
-
 set scrolloff=5
-
 
 "Fugitive Key Binds
 nmap <leader>gs :G<CR>
+nmap <leader>gj :diffget //3<CR>
+nmap <leader>gf :diffget //2<CR>
+
 
 " Vimtex Settings
 nmap <leader>lc :VimtexCompile<CR>
 nmap <leader>lv :VimtexView<CR>
 
 " Persistent undo history
-set undofile
-set undodir=/home/lei/.config/nvim/vimundo/
+" set undofile
+" set undodir=/home/lei/.config/nvim/vimundo/
 
 " NeoVim Terminal
 nmap <leader>t :terminal<CR>
@@ -205,4 +213,7 @@ nmap <leader>t :terminal<CR>
 " Save bind
 nmap <C-s> :w<CR>
 
+vmap <silent> <leader>e :JupyterSendRange<CR>
 nmap <silent> <leader>e :JupyterSendRange<CR>
+
+inoremap <C-Space> <c-x><c-o>
